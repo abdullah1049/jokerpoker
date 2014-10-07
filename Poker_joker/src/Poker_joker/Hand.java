@@ -18,6 +18,7 @@ public class Hand {
 	private boolean Ace;
 	private static Deck deck_joker = new Deck();
 	private ArrayList<Card> Current_Hands;
+	ArrayList<Hand> joker_hand = new ArrayList<Hand>();
 
 	public Hand(ArrayList<Card> cards) {
 		
@@ -39,44 +40,46 @@ public class Hand {
 
 	public void hand_joker() {
 		
-		ArrayList<Hand> joker_hand = new ArrayList<Hand>();
 		
 		joker_hand.add(this);
 		
 		int alt_card = 0;
 		
 		ArrayList<Card> cards = this.getCards();
-		
-		for (int i = 0; i < cards.size(); i++) {
+		int count = 0;
+		while (count<cards.size()){
 			
-			Card possible_hand = cards.get(i);
+			Card possible_hand = cards.get(count);
 			
 			joker_hand = possible_hands(joker_hand, alt_card);
-			
+			count++;
 			alt_card++;
 		}
-		for (Hand evaluate_hand : joker_hand) {
-			evaluate_hand.EvalHand();
-
-		}
-		Collections.sort(joker_hand, Hand.HandRank);
 		
+		for (Hand evaluate_hand : joker_hand) {
+			
+			evaluate_hand.EvalHand();
+		}
+		
+		
+		Collections.sort(joker_hand, Hand.HandRank);
+
+		this.HiHand = joker_hand.get(0).getHighPairStrength();
+		
+		this.LoHand = joker_hand.get(0).getLowPairStrength();
 		this.set_best_hand(joker_hand.get(0).getCards());
 		
 		this.HandStrength = joker_hand.get(0).getHandStrength();
 		
-		this.HiHand = joker_hand.get(0).getHighPairStrength();
-		
-		this.LoHand = joker_hand.get(0).getLowPairStrength();
 		
 		this.Kicker = joker_hand.get(0).getKicker();
 	}
 
-	private static ArrayList<Hand> possible_hands(
-			ArrayList<Hand> current_hands, int alt_card) {
+	private static ArrayList<Hand> possible_hands(ArrayList<Hand> current_hands, int alt_card) {
 
 		ArrayList<Hand> alt_hands = new ArrayList<Hand>();
-
+		
+		
 		for (Hand hands : current_hands) {
 
 			ArrayList<Card> x = hands.getCards();
@@ -89,6 +92,8 @@ public class Hand {
 
 					alt_card2.add(alt_Joker);
 
+					
+					
 					for (int y = 0; y < 5; y++) {
 
 						if (alt_card != y) {
@@ -100,12 +105,7 @@ public class Hand {
 					Hand alt_hand = new Hand(alt_card2);
 
 					alt_hands.add(alt_hand);
-
-				}
-			}
-
-		}
-		
+				}}}
 		return alt_hands;
 	}
 
@@ -412,20 +412,6 @@ public class Hand {
 					CardsInHand.get(eCardNo.SecondCard.getCardNo()).getRank()
 							.getRank());
 		}
-	}
-	
-	private void natural() {
-		
-		for (Card cards : CardsInHand) {
-			
-			if (cards.getRank().getRank() == eRank.JOKER.getRank()) {
-				
-				this.natural();
-				
-			}
-			
-		}
-		
 	}
 	
 
