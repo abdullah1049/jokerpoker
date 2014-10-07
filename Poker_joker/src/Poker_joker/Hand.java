@@ -24,8 +24,7 @@ public class Hand {
 		
 		CardsInHand = cards;
 		
-		hand_joker();
-		
+		hand_joker();	
 	}
 
 	public Hand(Deck d) {
@@ -35,7 +34,6 @@ public class Hand {
 		}
 		CardsInHand = Import;
 		hand_joker();
-
 	}
 
 	public void hand_joker() {
@@ -63,6 +61,7 @@ public class Hand {
 		
 		
 		Collections.sort(joker_hand, Hand.HandRank);
+		this.Kicker = joker_hand.get(0).getKicker();
 
 		this.HiHand = joker_hand.get(0).getHighPairStrength();
 		
@@ -72,7 +71,6 @@ public class Hand {
 		this.HandStrength = joker_hand.get(0).getHandStrength();
 		
 		
-		this.Kicker = joker_hand.get(0).getKicker();
 	}
 
 	private static ArrayList<Hand> possible_hands(ArrayList<Hand> current_hands, int alt_card) {
@@ -90,15 +88,17 @@ public class Hand {
 
 					ArrayList<Card> alt_card2 = new ArrayList<Card>();
 
-					alt_card2.add(alt_Joker);
-
+					alt_card2.add(alt_Joker);	
 					
 					
-					for (int y = 0; y < 5; y++) {
+					
+					int count = 0;
+					while (count<5){
+						
+						if (alt_card != count) {
 
-						if (alt_card != y) {
-
-							alt_card2.add(hands.getCards().get(y));
+							alt_card2.add(hands.getCards().get(count));
+							count ++;
 						}
 					}
 
