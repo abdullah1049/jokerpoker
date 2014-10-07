@@ -94,12 +94,12 @@ public class Hand {
 					
 					int count = 0;
 					while (count<5){
-						
 						if (alt_card != count) {
 
 							alt_card2.add(hands.getCards().get(count));
-							count ++;
 						}
+						count ++;
+
 					}
 
 					Hand alt_hand = new Hand(alt_card2);
